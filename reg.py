@@ -1,36 +1,44 @@
 from math import sqrt
 
-infiles = ["g1.dat", "m1.dat", "p1.dat"]
+"""
+    Esportare i file da excel in formato csv, con struttura:
+
+    x1 y1 sigma1
+    x2 y2 sigma2
+    ....
+
+"""
+
+infiles = ["a.csv"]    #   Nome dei file
 
 for filename in infiles:
     with open(filename, "r") as file:
         lines = file.readlines()
 
-    lines = [i.split(" ") for i in lines]
+    lines = [i.split(";") for i in lines]
+    lines = [[i.replace(",",".") for i in j] for j in lines]
+
+    try:
+        float(lines[0][0])
+    except:
+        lines = lines[1:]
     lines = [[float(j) for j in i] for i in lines]
 
-    sigma = lines[0][0]
-    sigma = 1        #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    lines = lines[1:]
     xs = [i[0] for i in lines]
     ys = [i[1] for i in lines]
+    sigmas = [i[2] for i in lines]
 
-    Sw = len(xs)*(1/sigma**2)
-    Sx = sum([i/sigma**2 for i in xs])
-    Sxx = sum([i**2/sigma**2 for i in xs])
-    Sy = sum([i/sigma**2 for i in ys])
-    Sxy = sum([xs[n]*ys[n]/sigma**2 for n,_ in enumerate(xs)])
+    Sw = sum([1/(s**2) for s in sigmas])
+    Sx = sum([x/(s**2) for x,s in zip(xs,sigmas)])
+    Sxx = sum([x**2/s**2 for x,s in zip(xs,sigmas)])
+    Sy = sum([y/s**2 for y,s in zip(ys,sigmas)])
+    Sxy = sum([(x*y)/s**2 for x,y,s in zip(xs,ys,sigmas)])
     Delta = Sxx*Sw-Sx**2
 
     A = (Sxx*Sy-Sxy*Sx)/Delta
     B = (Sxy*Sw-Sx*Sy)/Delta
-    sigma_a = (Sxx/Delta)**(1/2)
-    sigma_b = (Sw/Delta)**(1/2)
+    sigma_a = sqrt(Sxx/Delta)
+    sigma_b = sqrt(Sw/Delta)
 
-    sy = sqrt((sum([(ys[i]-A-B*xs[i])**2 for i, _ in enumerate(xs)])/(len(xs)-2)))
-    sa = sy*sqrt(Sxx/Delta)
-    sb = sy*sqrt(Sw/Delta)
-
-    print(f"{sa} {sb}".replace(".", ","))
-    print(f"{A};{B};{sigma_a};{sigma_b}".replace(".", ","))
+    print(f"A= {A} +- {sigma_a}; B= {B} +- {sigma_b}".replace(".", ","))
     print("-"*100)
