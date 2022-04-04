@@ -1,3 +1,3 @@
 # Statistica
-Programmi utili per il laboratorio di statistica, scritti da Luca Vettore.
+Programmi utili per il laboratorio di statistica.
 Vedere commenti del codice per istruzioni
