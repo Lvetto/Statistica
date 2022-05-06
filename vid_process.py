@@ -5,8 +5,8 @@ from time import time
 
 """
 I fotogrammi del video sono salvati come matrici, dove il nero (colore della corda) è rappresentato dal valore 256 e il bianco da 0.
-I fotogrammi consecutivi sono quindi confrontati tra loro  la loro differenza in vaore assluto è sommata a una matrice delle stesse dimensioni.
-La matrice è poi normalizzata rispetto al valore più alto, in modo da rappresentare la variazione media dei singoli pixel relativa.
+I fotogrammi consecutivi sono quindi confrontati tra loro e la loro differenza in vaore assluto è sommata a una matrice delle stesse dimensioni.
+La matrice è poi normalizzata rispetto al valore più alto, in modo da rappresentare la variazione media dei singoli pixel relativamente al massimo.
 Fissando la fotocamera relativamente al sistema e mascherando lo sfondo con un supporto bianco, tutte le variazioni al di fuori dell'oscilazione della corda risultano trascurabili.
 Selezionando solo i valori maggiori di una costante scelta in maniera appropriata, risulta possibile ricavare una mappa chiara della forma d'onda, da poter poi sovrapporre a un fotogramma contenente una scala graduata per effettuare le misure
 I video utilizzati sono registrati con un framerate elevato, in modo da poterli rallentare senza perdita di qualità prima di processarli.
